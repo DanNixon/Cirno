@@ -2,10 +2,6 @@
 
 #include "Arduino.h"
 
-/* TODO */
-/* LCD_POWER should really have software PWM, since it is used for contrast control */
-/* It needs to be added for the LEDs anyway */
-
 TiLDA_MKe::TiLDA_MKe() :
   glcd(LCD_CS, LCD_A0, LCD_RESET)
 {
@@ -13,6 +9,10 @@ TiLDA_MKe::TiLDA_MKe() :
   pinMode(LCD_POWER, OUTPUT);
   digitalWrite(LCD_POWER, LOW);
 
+  /*
+   * I think the EMF board def. puts this on a PWM pin
+   * but keeping it on digital makes it easier to toggle
+   */
   pinMode(LCD_BACKLIGHT, OUTPUT);
 
   // Configure buttons
@@ -28,44 +28,63 @@ TiLDA_MKe::TiLDA_MKe() :
   buttons.addButton(BUTTON_CENTER);
 
   // LED setup
-  /* pinMode(LED1_RED, OUTPUT); */
-  /* pinMode(LED1_GREEN, OUTPUT); */
-  /* pinMode(LED1_BLUE, OUTPUT); */
-
-  /* pinMode(LED2_RED, OUTPUT); */
-  /* pinMode(LED2_GREEN, OUTPUT); */
-  /* pinMode(LED2_BLUE, OUTPUT); */
-
-  /* uint8_t inital_state = HIGH; */
-  /* setLED(1, inital_state, inital_state, inital_state); */
-  /* setLED(2, inital_state, inital_state, inital_state); */
+  uint8_t inital_state = 0;
+  setLED(1, inital_state, inital_state, inital_state);
+  setLED(2, inital_state, inital_state, inital_state);
 }
 
+/**
+ * Sets the state of the backlight.
+ *
+ * @param state State to set backlight to (1 or 0)
+ */
 void TiLDA_MKe::setBacklight(uint8_t state)
 {
   digitalWrite(LCD_BACKLIGHT, state);
 }
 
+/**
+ * Gets the state of the backlight.
+ *
+ * @returns Backlight state
+ */
 uint8_t TiLDA_MKe::backlight()
 {
   return digitalRead(LCD_BACKLIGHT);
 }
 
+/**
+ * Flips the state of the backlight then returns the new state.
+ *
+ * @returns New backlight state
+ */
+uint8_t TiLDA_MKe::toggleBacklight()
+{
+  digitalWrite(LCD_BACKLIGHT, !backlight());
+  return digitalRead(LCD_BACKLIGHT);
+}
+
+/**
+ * Sets the colour and brightness of the RGB LEDs.
+ *
+ * @param led LED to set (1 or 2)
+ * @param r Red intensity
+ * @param g Green intensity
+ * @param b Blue intensity
+ */
 void TiLDA_MKe::setLED(uint8_t led, uint8_t r, uint8_t g, uint8_t b)
 {
-  //TODO: Add software PWM here
-
   switch(led)
   {
     case 1:
-      digitalWrite(LED1_RED, r);
-      digitalWrite(LED1_GREEN, g);
-      digitalWrite(LED1_BLUE, b);
+      analogWrite(LED1_RED, r);
+      analogWrite(LED1_GREEN, g);
+      analogWrite(LED1_BLUE, b);
       break;
     case 2:
-      digitalWrite(LED2_RED, r);
-      digitalWrite(LED2_GREEN, g);
-      digitalWrite(LED2_BLUE, b);
+      analogWrite(LED2_RED, r);
+      analogWrite(LED2_GREEN, g);
+      analogWrite(LED2_BLUE, b);
       break;
     default:
       return;

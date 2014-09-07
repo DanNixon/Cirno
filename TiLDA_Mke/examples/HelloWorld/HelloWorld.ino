@@ -20,17 +20,23 @@ void setup(void)
 
   // Set button callback
   tilda.buttons.setStateChangeCallback(&button_handler);
+
+  // Light the RGB LEDs
+  tilda.setLED(1, 0, 0, 50);
+  tilda.setLED(2, 50, 0, 0);
 }
 
 void loop()
 {
+  // See if there were any button changes
   tilda.buttons.poll();
 
   // Display some text on the GLCD
   tilda.glcd.firstPage();
   do
   {
-    tilda.glcd.drawStr(10, 20, "Hello, World!");
+    tilda.glcd.drawStr(0, 0, "Hello, World!");
+    tilda.glcd.drawStr(5, 25, "Eye'm the strongest!");
   }
   while(tilda.glcd.nextPage());
 
@@ -44,7 +50,7 @@ void button_handler(buttonid_t id, uint8_t state)
 {
   // Toggle backlight on pressing Light button
   if(state && (id == BUTTON_LIGHT))
-    tilda.setBacklight(!tilda.backlight());
+    tilda.toggleBacklight();
 
   SerialUSB.print("Button ");
   SerialUSB.print(id);

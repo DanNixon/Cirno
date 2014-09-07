@@ -3,8 +3,6 @@
 
 #include "inttypes.h"
 
-#include "pins_mke.h"
-
 #include "U8glib.h"
 #include "UniversalButtons.h"
 
@@ -17,6 +15,7 @@ class TiLDA_MKe
 
     void setBacklight(uint8_t state);
     uint8_t backlight();
+    uint8_t toggleBacklight();
 
     UniversalButtons buttons;
     U8GLIB_NHD_C12864 glcd;
