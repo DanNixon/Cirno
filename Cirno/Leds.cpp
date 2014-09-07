@@ -12,6 +12,10 @@ Leds::Leds()
   pinMode(LED2_RED, OUTPUT);
   pinMode(LED2_GREEN, OUTPUT);
   pinMode(LED2_BLUE, OUTPUT);
+
+  uint8_t inital_state = HIGH;
+  setLED(1, inital_state, inital_state, inital_state);
+  setLED(2, inital_state, inital_state, inital_state);
 }
 
 void Leds::setLED(uint8_t led, uint8_t r, uint8_t g, uint8_t b)
