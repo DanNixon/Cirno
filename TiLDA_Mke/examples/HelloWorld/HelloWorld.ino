@@ -42,6 +42,10 @@ void loop()
  */
 void button_handler(buttonid_t id, uint8_t state)
 {
+  // Toggle backlight on pressing Light button
+  if(state && (id == BUTTON_LIGHT))
+    tilda.setBacklight(!tilda.backlight());
+
   SerialUSB.print("Button ");
   SerialUSB.print(id);
   if(state)
