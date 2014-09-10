@@ -12,12 +12,6 @@ void setup(void)
 
   tilda.setBacklight(LCD_BACKLIGHT_ON);
 
-  // Configure GLCD font
-  tilda.glcd.setFont(u8g_font_6x10);
-  tilda.glcd.setFontRefHeightExtendedText();
-  tilda.glcd.setDefaultForegroundColor();
-  tilda.glcd.setFontPosTop();
-
   // Set button callback
   tilda.buttons.setStateChangeCallback(&button_handler);
 
@@ -35,8 +29,26 @@ void loop()
   tilda.glcd.firstPage();
   do
   {
-    tilda.glcd.drawStr(0, 0, "Hello, World!");
+    tilda.glcd.setFont(u8g_font_6x10);
+    tilda.glcd.drawStr(0, 7, "Hello, World!");
     tilda.glcd.drawStr(5, 25, "Eye'm the strongest!");
+
+    // Show some button info
+    tilda.glcd.setFont(u8g_font_5x7);
+    if(tilda.buttons.getButtonState(BUTTON_LIGHT))
+      tilda.glcd.drawStr(0, 40, "Light");
+    if(tilda.buttons.getButtonState(BUTTON_A))
+      tilda.glcd.drawStr(0, 40, "A");
+    if(tilda.buttons.getButtonState(BUTTON_B))
+      tilda.glcd.drawStr(0, 40, "B");
+    if(tilda.buttons.getButtonState(BUTTON_UP))
+      tilda.glcd.drawStr(0, 40, "Up");
+    if(tilda.buttons.getButtonState(BUTTON_DOWN))
+      tilda.glcd.drawStr(0, 40, "Down");
+    if(tilda.buttons.getButtonState(BUTTON_LEFT))
+      tilda.glcd.drawStr(0, 40, "Left");
+    if(tilda.buttons.getButtonState(BUTTON_RIGHT))
+      tilda.glcd.drawStr(0, 40, "Right");
   }
   while(tilda.glcd.nextPage());
 
