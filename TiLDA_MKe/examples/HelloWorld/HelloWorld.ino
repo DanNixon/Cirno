@@ -1,3 +1,7 @@
+/**
+ * Sample with usage of basic features.
+ */
+
 #include "U8glib.h"
 #include "UniversalButtons.h"
 
