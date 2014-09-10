@@ -65,7 +65,7 @@ uint8_t TiLDA_MKe::backlight()
 uint8_t TiLDA_MKe::toggleBacklight()
 {
   digitalWrite(LCD_BACKLIGHT, !backlight());
-  return digitalRead(LCD_BACKLIGHT);
+  return backlight();
 }
 
 /**
