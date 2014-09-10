@@ -31,6 +31,10 @@ TiLDA_MKe::TiLDA_MKe() :
   uint8_t inital_state = 0;
   setLED(1, inital_state, inital_state, inital_state);
   setLED(2, inital_state, inital_state, inital_state);
+
+  // Battery monitor setup
+  pinMode(MCP_STAT, INPUT_PULLUP);
+  pinMode(VBATT_MON, INPUT);
 }
 
 /**
@@ -89,4 +93,36 @@ void TiLDA_MKe::setLED(uint8_t led, uint8_t r, uint8_t g, uint8_t b)
     default:
       return;
   }
+}
+
+/**
+ * Gets an approximation of the battery percentage.
+ *
+ * Note that the value is only accurate when not charging.
+ *
+ * @return Approx battery percentage
+ */
+uint8_t TiLDA_MKe::getBatteryPercentage()
+{
+  return (analogRead(VBATT_MON) - PMIC_BATTERY_FLAT) * PMIC_BATTERY_PERCENT_RATIO;
+}
+
+/**
+ * Gets the battery voltage.
+ *
+ * @return Battery voltage
+ */
+float TiLDA_MKe::getBatteryVoltage()
+{
+  return (analogRead(VBATT_MON) * (3.3 / 512));
+}
+
+/**
+ * Tests if the batter is being charged.
+ *
+ * @return True if charging, false otherwise
+ */
+bool TiLDA_MKe::isCharging()
+{
+  return !digitalRead(MCP_STAT);
 }

@@ -49,6 +49,12 @@ void loop()
       tilda.glcd.drawStr(0, 40, "Left");
     if(tilda.buttons.getButtonState(BUTTON_RIGHT))
       tilda.glcd.drawStr(0, 40, "Right");
+
+    // Show some battery info
+    char buffer[40];
+    sprintf(buffer, "Battery: %d%% (chg. %d)",
+        tilda.getBatteryPercentage(), tilda.isCharging());
+    tilda.glcd.drawStr(0, 50, buffer);
   }
   while(tilda.glcd.nextPage());
 

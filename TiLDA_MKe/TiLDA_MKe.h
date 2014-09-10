@@ -6,6 +6,14 @@
 #include "U8glib.h"
 #include "UniversalButtons.h"
 
+#define PMIC_BATTERY_FULL 652               // 100%
+#define PMIC_BATTERY_GOOD 512               // 25%
+#define PMIC_BATTERY_LOW 496                // 17%
+#define PMIC_BATTERY_VERYLOW 481            // 9%
+#define PMIC_BATTERY_FLAT 465               // 0%
+
+#define PMIC_BATTERY_PERCENT_RATIO 0.534
+
 class TiLDA_MKe
 {
   public:
@@ -16,6 +24,10 @@ class TiLDA_MKe
     void setBacklight(uint8_t state);
     uint8_t backlight();
     uint8_t toggleBacklight();
+
+    uint8_t getBatteryPercentage();
+    float getBatteryVoltage();
+    bool isCharging();
 
     UniversalButtons buttons;
     U8GLIB_NHD_C12864 glcd;
