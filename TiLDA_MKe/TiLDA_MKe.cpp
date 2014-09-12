@@ -28,9 +28,7 @@ TiLDA_MKe::TiLDA_MKe() :
   buttons.addButton(BUTTON_CENTER);
 
   // LED setup
-  uint8_t inital_state = 0;
-  setLED(1, inital_state, inital_state, inital_state);
-  setLED(2, inital_state, inital_state, inital_state);
+  setLEDs(0, 0, 0);
 
   // Battery monitor setup
   pinMode(MCP_STAT, INPUT_PULLUP);
@@ -93,6 +91,19 @@ void TiLDA_MKe::setLED(uint8_t led, uint8_t r, uint8_t g, uint8_t b)
     default:
       return;
   }
+}
+
+/**
+ * Sets both RGB LEDs to the same colour.
+ *
+ * @param r Red intensity
+ * @param g Green intensity
+ * @param b Blue intensity
+ */
+void TiLDA_MKe::setLEDs(uint8_t r, uint8_t g, uint8_t b)
+{
+  setLED(1, r, g, b);
+  setLED(2, r, g, b);
 }
 
 /**
