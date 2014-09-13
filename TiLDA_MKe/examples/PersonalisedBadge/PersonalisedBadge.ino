@@ -24,7 +24,6 @@ void loop()
   // See if there were any button changes
   tilda.buttons.poll();
 
-  // Display some text on the GLCD
   tilda.glcd.firstPage();
   do
   {
@@ -43,7 +42,7 @@ void loop()
     tilda.glcd.setFont(u8g_font_6x10);
     tilda.glcd.setFontPosTop();
     tilda.glcd.drawStr(0, 60, "Code");
-    tilda.glcd.drawStr(0, 70, "moneky,");
+    tilda.glcd.drawStr(0, 70, "monkey,");
     tilda.glcd.drawStr(0, 80, "electronics");
     tilda.glcd.drawStr(0, 90, "engineer,");
     tilda.glcd.drawStr(0, 100, "mad");
@@ -66,6 +65,10 @@ void button_handler(buttonid_t id, uint32_t time)
 
     // Toggle LEDs on B
     case BUTTON_B:
+      // Require a 1 second press to turn on, any length press to turn off
+      if(!torch && (time < 1000))
+        break;
+
       torch = !torch;
 
       if(torch)
