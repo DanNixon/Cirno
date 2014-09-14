@@ -204,15 +204,10 @@ void TiLDA_MKe::drawWrappedStr(uint8_t x, uint8_t y,
       if(*(text+last_cut_index) != delimitOn)
         out_string_start--;
 
-      SerialUSB.println(out_string_start);
-
       memcpy(print_str, out_string_start, prev_cut_index-last_cut_index);
 
       print_str[prev_cut_index - last_cut_index] = '\0';
       last_cut_index = prev_cut_index;
-
-      SerialUSB.print("B: ");
-      SerialUSB.println(print_str);
 
       if(y_pos <= (y + w))
       {
