@@ -39,7 +39,7 @@ void loop()
   }
   while(tilda.glcd.nextPage());
 
-  delay(10);
+  delay(1000);
 }
 
 /**

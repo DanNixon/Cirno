@@ -153,6 +153,81 @@ bool TiLDA_MKe::isCharging()
 size_t TiLDA_MKe::printWrappedString(uint8_t x1, uint8_t y1,
     uint8_t x2, uint8_t y2, char *text, char delimitOn)
 {
+  int last_cut_index = 0;
+  int prev_cut_index = 0;
+  int cut_index = 0;
+  int len = strlen(text);
+
+  int width = y2 - y1;
+  int num_rows = 1;
+
+  SerialUSB.print("Original Len: ");
+  SerialUSB.println(len);
+
+  while(last_cut_index < len)
+  {
+    // Get index of next delim char
+    char *space_index = strchr(text+prev_cut_index+1, delimitOn);
+    cut_index = space_index - text;
+
+    if(space_index == NULL)
+    {
+      SerialUSB.print("=== Out string: ");
+      SerialUSB.println(text+prev_cut_index+1);
+
+      if((glcd.getFontAscent() * num_rows) <= (y2 - y1))
+      {
+        glcd.drawStr(x1, glcd.getFontAscent()*num_rows, text+prev_cut_index+1);
+        num_rows++;
+      }
+
+      break;
+    }
+
+    SerialUSB.print("Cut index: ");
+    SerialUSB.println(cut_index);
+
+    // Create substring
+    char buff[cut_index - last_cut_index];
+    memcpy(buff, text+last_cut_index+1, cut_index-last_cut_index);
+    buff[cut_index - last_cut_index] = '\0';
+
+    SerialUSB.print("substr: ");
+    SerialUSB.println(buff);
+
+    // Test substring
+    if(glcd.getStrWidth(buff) < width)
+    {
+      SerialUSB.println("short");
+
+      prev_cut_index = cut_index;
+    }
+    else
+    {
+      SerialUSB.println("too long");
+
+      char print_str[prev_cut_index - last_cut_index + 1];
+      if(*(text+last_cut_index) == ' ')
+      {
+        memcpy(print_str, text+last_cut_index+1, prev_cut_index-last_cut_index);
+      }
+      else
+      {
+        memcpy(print_str, text+last_cut_index, prev_cut_index-last_cut_index);
+      }
+      print_str[prev_cut_index - last_cut_index] = '\0';
+      last_cut_index = prev_cut_index;
+
+      SerialUSB.print("=== Out string: ");
+      SerialUSB.println(print_str);
+
+      if((glcd.getFontAscent() * num_rows) <= (y2 - y1))
+      {
+        glcd.drawStr(x1, glcd.getFontAscent()*num_rows, print_str);
+        num_rows++;
+      }
+    }
+  }
 
   return 0;
 }
