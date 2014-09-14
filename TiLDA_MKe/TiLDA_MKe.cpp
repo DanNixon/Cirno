@@ -147,87 +147,68 @@ bool TiLDA_MKe::isCharging()
  * @param y2 Y coordinate of the bottom right corner of the area
  * @param text Text string
  * @param delimitOn Character to delimit text on
- *
- * @returns Number of characters in text string that could not be made to fit in given area
  */
-size_t TiLDA_MKe::printWrappedString(uint8_t x1, uint8_t y1,
+void TiLDA_MKe::printWrappedString(uint8_t x1, uint8_t y1,
     uint8_t x2, uint8_t y2, char *text, char delimitOn)
 {
   int last_cut_index = 0;
   int prev_cut_index = 0;
   int cut_index = 0;
-  int len = strlen(text);
 
-  int width = y2 - y1;
+  int width = x2 - x1;
   int num_rows = 1;
 
-  SerialUSB.print("Original Len: ");
-  SerialUSB.println(len);
-
-  while(last_cut_index < len)
+  while(last_cut_index < strlen(text))
   {
-    // Get index of next delim char
-    char *space_index = strchr(text+prev_cut_index+1, delimitOn);
+    char *search_start = text + prev_cut_index + 1;
+    char *string_start = text + last_cut_index + 1;
+    char *space_index = strchr(search_start, delimitOn);
     cut_index = space_index - text;
 
+    int y_pos = y1 + ((glcd.getFontAscent() + abs(glcd.getFontDescent())) * num_rows);
+
+    // At the end of the string, just print it
     if(space_index == NULL)
     {
-      SerialUSB.print("=== Out string: ");
-      SerialUSB.println(text+prev_cut_index+1);
-
-      if((glcd.getFontAscent() * num_rows) <= (y2 - y1))
+      if(y_pos <= y2)
       {
-        glcd.drawStr(x1, glcd.getFontAscent()*num_rows, text+prev_cut_index+1);
+        glcd.drawStr(x1, glcd.getFontAscent()*num_rows, search_start);
         num_rows++;
       }
-
       break;
     }
 
-    SerialUSB.print("Cut index: ");
-    SerialUSB.println(cut_index);
-
     // Create substring
-    char buff[cut_index - last_cut_index];
-    memcpy(buff, text+last_cut_index+1, cut_index-last_cut_index);
-    buff[cut_index - last_cut_index] = '\0';
-
-    SerialUSB.print("substr: ");
-    SerialUSB.println(buff);
+    char sub_str[cut_index - last_cut_index];
+    memcpy(sub_str, string_start, cut_index-last_cut_index);
+    sub_str[cut_index - last_cut_index] = '\0';
 
     // Test substring
-    if(glcd.getStrWidth(buff) < width)
+    if(glcd.getStrWidth(sub_str) < width)
     {
-      SerialUSB.println("short");
-
       prev_cut_index = cut_index;
     }
     else
     {
-      SerialUSB.println("too long");
-
+      // Get string to be printed
       char print_str[prev_cut_index - last_cut_index + 1];
-      if(*(text+last_cut_index) == ' ')
-      {
-        memcpy(print_str, text+last_cut_index+1, prev_cut_index-last_cut_index);
-      }
-      else
-      {
-        memcpy(print_str, text+last_cut_index, prev_cut_index-last_cut_index);
-      }
+      char *out_string_start = string_start;
+
+      if(*(text+last_cut_index) != ' ')
+        out_string_start--;
+
+      memcpy(print_str, string_start, prev_cut_index-last_cut_index);
+
       print_str[prev_cut_index - last_cut_index] = '\0';
       last_cut_index = prev_cut_index;
 
-      SerialUSB.print("=== Out string: ");
-      SerialUSB.println(print_str);
-
-      if((glcd.getFontAscent() * num_rows) <= (y2 - y1))
+      if(y_pos <= y2)
       {
-        glcd.drawStr(x1, glcd.getFontAscent()*num_rows, print_str);
+        glcd.drawStr(x1, y_pos, print_str);
         num_rows++;
       }
+      else
+        break;
     }
   }
-
-  return 0;
 }
