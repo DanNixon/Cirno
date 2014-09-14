@@ -30,7 +30,7 @@ class TiLDA_MKe
     float getBatteryVoltage();
     bool isCharging();
 
-    void printWrappedString(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2,
+    void drawWrappedStr(uint8_t x, uint8_t y, uint8_t w, uint8_t h,
         char *text, char delimitOn=' ');
 
     UniversalButtons buttons;

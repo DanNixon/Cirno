@@ -148,7 +148,7 @@ bool TiLDA_MKe::isCharging()
  * @param text Text string
  * @param delimitOn Character to delimit text on
  */
-void TiLDA_MKe::printWrappedString(uint8_t x, uint8_t y,
+void TiLDA_MKe::drawWrappedStr(uint8_t x, uint8_t y,
     uint8_t w, uint8_t h, char *text, char delimitOn)
 {
   glcd.setFontPosBaseline();

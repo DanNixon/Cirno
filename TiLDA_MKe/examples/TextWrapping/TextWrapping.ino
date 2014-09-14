@@ -38,13 +38,13 @@ void loop()
 
     tilda.glcd.setFont(u8g_font_6x10);
 
-    tilda.printWrappedString(10, 0, 50, 50, longString);
+    tilda.drawWrappedStr(10, 0, 50, 50, longString);
     tilda.glcd.drawFrame(10, 0, 50, 50);
 
-    tilda.printWrappedString(0, 50, 127, 12, shorterString);
+    tilda.drawWrappedStr(0, 50, 127, 12, shorterString);
     tilda.glcd.drawFrame(0, 50, 127, 12);
 
-    tilda.printWrappedString(64, 0, 63, 50, shorterString);
+    tilda.drawWrappedStr(64, 0, 63, 50, shorterString);
     tilda.glcd.drawFrame(64, 0, 63, 50);
   }
   while(tilda.glcd.nextPage());
