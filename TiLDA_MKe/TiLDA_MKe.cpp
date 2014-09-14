@@ -137,3 +137,22 @@ bool TiLDA_MKe::isCharging()
 {
   return !digitalRead(MCP_STAT);
 }
+
+/**
+ * Prints a block of text in a given area, wrapping on a given character.
+ *
+ * @param x1 X coordinate of the top left corner of the area
+ * @param y1 Y coordinate of the top left corner of the area
+ * @param x2 X coordinate of the bottom right corner of the area
+ * @param y2 Y coordinate of the bottom right corner of the area
+ * @param text Text string
+ * @param delimitOn Character to delimit text on
+ *
+ * @returns Number of characters in text string that could not be made to fit in given area
+ */
+size_t TiLDA_MKe::printWrappedString(uint8_t x1, uint8_t y1,
+    uint8_t x2, uint8_t, y2, char *text, char delimitOn)
+{
+
+  return 0;
+}
