@@ -151,7 +151,7 @@ bool TiLDA_MKe::isCharging()
  * @returns Number of characters in text string that could not be made to fit in given area
  */
 size_t TiLDA_MKe::printWrappedString(uint8_t x1, uint8_t y1,
-    uint8_t x2, uint8_t, y2, char *text, char delimitOn)
+    uint8_t x2, uint8_t y2, char *text, char delimitOn)
 {
 
   return 0;
