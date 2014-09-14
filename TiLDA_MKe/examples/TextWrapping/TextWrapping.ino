@@ -34,12 +34,22 @@ void loop()
   do
   {
     char *longString = "This is a quite long string, far too long to be printed on a single line of a GLCD";
+    char *shorterString = "Hello world";
+
     tilda.glcd.setFont(u8g_font_6x10);
-    tilda.printWrappedString(10, 0, 80, 50, longString);
+
+    tilda.printWrappedString(10, 0, 50, 50, longString);
+    tilda.glcd.drawFrame(10, 0, 50, 50);
+
+    tilda.printWrappedString(0, 50, 127, 12, shorterString);
+    tilda.glcd.drawFrame(0, 50, 127, 12);
+
+    tilda.printWrappedString(64, 0, 63, 50, shorterString);
+    tilda.glcd.drawFrame(64, 0, 63, 50);
   }
   while(tilda.glcd.nextPage());
 
-  delay(1000);
+  delay(10);
 }
 
 /**
