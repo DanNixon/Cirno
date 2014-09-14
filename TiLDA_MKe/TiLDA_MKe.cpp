@@ -170,11 +170,11 @@ void TiLDA_MKe::drawWrappedStr(uint8_t x, uint8_t y,
     // At the end of the string, just print it
     if(space_index == NULL)
     {
-      char *out_text = search_start;
+      char *out_text = string_start;
       if(num_rows == 1)
         out_text = string_start - 1;
 
-      if(y_pos <= (y + w))
+      if(y_pos <= (y + h))
       {
         glcd.drawStr(x, y_pos - glcd.getFontDescent(), out_text);
         num_rows++;
@@ -209,7 +209,7 @@ void TiLDA_MKe::drawWrappedStr(uint8_t x, uint8_t y,
       print_str[prev_cut_index - last_cut_index] = '\0';
       last_cut_index = prev_cut_index;
 
-      if(y_pos <= (y + w))
+      if(y_pos <= (y + h))
       {
         glcd.drawStr(x, y_pos - glcd.getFontDescent(), print_str);
         num_rows++;
