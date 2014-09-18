@@ -175,7 +175,7 @@ void TiLDA_MKe::drawWrappedStr(uint8_t x, uint8_t y,
     last_newline_ptr = cut_point;
     pos_y += y_increment;
 
-    if(pos_y > h - y)
+    if(pos_y - y > h)
       return;
   }
 }
