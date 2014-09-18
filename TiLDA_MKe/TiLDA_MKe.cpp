@@ -146,76 +146,93 @@ bool TiLDA_MKe::isCharging()
  * @param w Width of the area
  * @param h Height of the area
  * @param text Text string
- * @param delimitOn Character to delimit text on
+ * @param delimiter Character to delimit text on
  */
 void TiLDA_MKe::drawWrappedStr(uint8_t x, uint8_t y,
-    uint8_t w, uint8_t h, char *text, char delimitOn)
+    uint8_t w, uint8_t h, char *text, char delimiter)
 {
-  glcd.setFontPosBaseline();
+  char *last_newline_ptr = text;
+  uint8_t y_increment = glcd.getFontLineSpacing();
+  uint8_t pos_y = y + y_increment;
 
-  int last_cut_index = 0;
-  int prev_cut_index = 0;
-  int cut_index = 0;
-  int num_rows = 1;
-
-  while(last_cut_index < strlen(text))
+  while(*last_newline_ptr != '\0')
   {
-    char *search_start = text + prev_cut_index + 1;
-    char *string_start = text + last_cut_index + 1;
-    char *space_index = strchr(search_start, delimitOn);
-    cut_index = space_index - text;
+    char *cut_point = getNewlinePtr(last_newline_ptr+1, w, delimiter);
+    int16_t len = cut_point - last_newline_ptr;
+    char *sub_str = new char[len + 1];
 
-    int y_pos = y + ((glcd.getFontAscent() + abs(glcd.getFontDescent())) * num_rows);
+    char *copy_start = last_newline_ptr;
+    if(*copy_start == delimiter)
+      ++copy_start;
 
-    // At the end of the string, just print it
-    if(space_index == NULL)
+    memcpy(sub_str, copy_start, len);
+    sub_str[len] = '\0';
+
+    glcd.drawStr(x, pos_y, sub_str);
+
+    delete[] sub_str;
+
+    last_newline_ptr = cut_point;
+    pos_y += y_increment;
+
+    if(pos_y > h - y)
+      return;
+  }
+}
+
+/**
+ * Determines if a string is too long to fit in a certain pixel width.
+ *
+ * @param string Pointer to the string
+ * @param len Length of the sub string
+ * @param limit Width in pixels the text must be less than
+ * @return True if the substring is wider then limit
+ */
+bool TiLDA_MKe::subStringOverLength(char *string, uint8_t len, uint8_t limit)
+{
+  char *sub_str = new char[len + 1];
+  memcpy(sub_str, string, len);
+  sub_str[len] = '\0';
+  uint8_t width = glcd.getStrWidth(sub_str);
+  delete[] sub_str;
+  return width > limit;
+}
+
+/**
+ * Gets a pointer to the position to wrap text for the GLCD.
+ *
+ * @param string String pointer
+ * @param width Max. text width in pixels
+ * @param delimiter Char. to delimit text on
+ * @return Pointer where the text should be split
+ */
+char *TiLDA_MKe::getNewlinePtr(char *string, uint8_t width, char delimiter)
+{
+  uint8_t len = 1;
+  bool over_length = false;
+
+  while(len < strlen(string))
+  {
+    if(subStringOverLength(string, len, width))
     {
-      char *out_text = string_start;
-      if(num_rows == 1)
-        out_text = string_start - 1;
-
-      if(y_pos <= (y + h))
-      {
-        glcd.drawStr(x, y_pos - glcd.getFontDescent(), out_text);
-        num_rows++;
-      }
+      over_length = true;
       break;
     }
+    len++;
+  }
 
-    // Create substring
-    char sub_str[cut_index - last_cut_index];
-    memcpy(sub_str, string_start, cut_index-last_cut_index);
-    sub_str[cut_index - last_cut_index] = '\0';
-
-    // Test substring
-    if(glcd.getStrWidth(sub_str) < w)
+  if(over_length)
+  {
+    while(len > 0)
     {
-      prev_cut_index = cut_index;
+      if(string[len] == delimiter)
+        return string+len;
+
+      len--;
     }
-    else
-    {
-      if(prev_cut_index == 0)
-        prev_cut_index = cut_index;
-
-      // Get string to be printed
-      char print_str[prev_cut_index - last_cut_index + 1];
-      char *out_string_start = string_start;
-
-      if(*(text+last_cut_index) != delimitOn)
-        out_string_start--;
-
-      memcpy(print_str, out_string_start, prev_cut_index-last_cut_index);
-
-      print_str[prev_cut_index - last_cut_index] = '\0';
-      last_cut_index = prev_cut_index;
-
-      if(y_pos <= (y + h))
-      {
-        glcd.drawStr(x, y_pos - glcd.getFontDescent(), print_str);
-        num_rows++;
-      }
-      else
-        break;
-    }
+  }
+  else
+  {
+    return string+len;
   }
 }

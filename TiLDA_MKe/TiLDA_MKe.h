@@ -31,10 +31,15 @@ class TiLDA_MKe
     bool isCharging();
 
     void drawWrappedStr(uint8_t x, uint8_t y, uint8_t w, uint8_t h,
-        char *text, char delimitOn=' ');
+        char *text, char delimiter=' ');
 
     UniversalButtons buttons;
     U8GLIB_NHD_C12864 glcd;
+
+  private:
+    bool subStringOverLength(char *string, uint8_t len, uint8_t limit);
+    char *getNewlinePtr(char *string, uint8_t width, char delimiter);
+
 };
 
 #endif //_TILDA_MKE_H
