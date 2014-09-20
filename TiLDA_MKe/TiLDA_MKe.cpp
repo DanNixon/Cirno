@@ -221,14 +221,26 @@ char *TiLDA_MKe::getNewlinePtr(char *string, uint8_t width, char delimiter)
     len++;
   }
 
+  uint8_t backtrack_len = len;
   if(over_length)
   {
-    while(len > 0)
+    // First try to look for the last delimiter to split on
+    while(backtrack_len > 1)
     {
-      if(string[len] == delimiter)
-        return string+len;
+      if(string[backtrack_len] == delimiter)
+        return string+backtrack_len;
 
-      len--;
+      backtrack_len--;
+    }
+
+    // If that fails just split wherever the string will fit on a single line
+    backtrack_len = len;
+    while(backtrack_len > 1)
+    {
+      if(!subStringOverLength(string, backtrack_len, width))
+        return string+backtrack_len;
+
+      backtrack_len--;
     }
   }
   else
