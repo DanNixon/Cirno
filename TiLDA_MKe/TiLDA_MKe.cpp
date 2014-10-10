@@ -9,11 +9,13 @@ TiLDA_MKe::TiLDA_MKe() :
   pinMode(LCD_POWER, OUTPUT);
   digitalWrite(LCD_POWER, LOW);
 
-  /*
-   * I think the EMF board def. puts this on a PWM pin
-   * but keeping it on digital makes it easier to toggle
-   */
+  /* I think the EMF board def. puts this on a PWM pin */
+  /* but keeping it on digital makes it easier to toggle */
   pinMode(LCD_BACKLIGHT, OUTPUT);
+
+  /* For some reason the buttons seem to be happier left as they are, */
+  /* usually they would default to being pull ups. */
+  buttons.setDefaultButtonConfig(0, 0);
 
   // Configure buttons
   buttons.addButton(BUTTON_LIGHT);
