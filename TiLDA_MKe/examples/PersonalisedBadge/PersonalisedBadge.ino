@@ -49,6 +49,9 @@ void loop()
     tilda.glcd.drawStr(0, 110, "scientist.");
   }
   while(tilda.glcd.nextPage());
+
+  // Can easily afford to take it easy
+  delay(50);
 }
 
 /**
