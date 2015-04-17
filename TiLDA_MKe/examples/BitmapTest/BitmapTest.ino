@@ -6,6 +6,7 @@
  */
 
 #include "U8glib.h"
+#include "UniversalInput.h"
 #include "UniversalButtons.h"
 
 #include "TiLDA_MKe.h"
