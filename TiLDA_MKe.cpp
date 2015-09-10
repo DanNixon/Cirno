@@ -1,6 +1,6 @@
 #include "TiLDA_MKe.h"
 
-#include "Arduino.h"
+#include <Arduino.h>
 
 TiLDA_MKe::TiLDA_MKe() :
   glcd(LCD_CS, LCD_A0, LCD_RESET)
@@ -15,19 +15,19 @@ TiLDA_MKe::TiLDA_MKe() :
 
   /* For some reason the buttons seem to be happier left as they are, */
   /* usually they would default to being pull ups. */
-  buttons.setDefaultButtonConfig(0, 0);
+  buttons.setButtonDefaults(false, false, 50);
 
   // Configure buttons
-  buttons.addButton(BUTTON_LIGHT);
-  buttons.addButton(BUTTON_SCREEN_RIGHT);
-  buttons.addButton(BUTTON_SCREEN_LEFT);
-  buttons.addButton(BUTTON_A);
-  buttons.addButton(BUTTON_B);
-  buttons.addButton(BUTTON_UP);
-  buttons.addButton(BUTTON_RIGHT);
-  buttons.addButton(BUTTON_DOWN);
-  buttons.addButton(BUTTON_LEFT);
-  buttons.addButton(BUTTON_CENTER);
+  buttons.addNewButton(BUTTON_LIGHT);
+  buttons.addNewButton(BUTTON_SCREEN_RIGHT);
+  buttons.addNewButton(BUTTON_SCREEN_LEFT);
+  buttons.addNewButton(BUTTON_A);
+  buttons.addNewButton(BUTTON_B);
+  buttons.addNewButton(BUTTON_UP);
+  buttons.addNewButton(BUTTON_RIGHT);
+  buttons.addNewButton(BUTTON_DOWN);
+  buttons.addNewButton(BUTTON_LEFT);
+  buttons.addNewButton(BUTTON_CENTER);
 
   // LED setup
   setLEDs(0, 0, 0);

@@ -2,11 +2,11 @@
  * Demonstrates the text wrapping function.
  */
 
-#include "U8glib.h"
-#include "UniversalInput.h"
-#include "UniversalButtons.h"
+#include <U8glib.h>
+#include <UniversalInputManager.h>
+#include <IButton.h>
 
-#include "TiLDA_MKe.h"
+#include <TiLDA_MKe.h>
 
 TiLDA_MKe tilda;
 
@@ -18,7 +18,7 @@ void setup(void)
   tilda.setBacklight(LCD_BACKLIGHT_ON);
 
   // Set button callback
-  tilda.buttons.setStateChangeCallback(&button_handler);
+  tilda.buttons.setCallback(button_handler);
 
   // Light the RGB LEDs
   tilda.setLED(1, 0, 5, 10);
@@ -56,9 +56,14 @@ void loop()
 /**
  * Basic handler for button state changes.
  */
-void button_handler(buttonid_t id, uint8_t state)
+void button_handler(inputtype_t type, IInputDevice * device)
 {
+  if(type != UIT_BUTTON)
+    return;
+
+  IButton * button = (IButton *) device;
+
   // Toggle backlight on pressing Light button
-  if(state && (id == BUTTON_LIGHT))
+  if(button->isActive() && (button->getID() == BUTTON_LIGHT))
     tilda.toggleBacklight();
 }

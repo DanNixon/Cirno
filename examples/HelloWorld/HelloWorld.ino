@@ -3,8 +3,8 @@
  */
 
 #include "U8glib.h"
-#include "UniversalInput.h"
-#include "UniversalButtons.h"
+#include "UniversalInputManager.h"
+#include "IButton.h"
 
 #include "TiLDA_MKe.h"
 
@@ -18,7 +18,7 @@ void setup(void)
   tilda.setBacklight(LCD_BACKLIGHT_ON);
 
   // Set button callback
-  tilda.buttons.setStateChangeCallback(&button_handler);
+  tilda.buttons.setCallback(button_handler);
 
   // Light the RGB LEDs
   tilda.setLED(1, 0, 0, 50);
@@ -40,19 +40,19 @@ void loop()
 
     // Show some button info
     tilda.glcd.setFont(u8g_font_5x7);
-    if(tilda.buttons.getButtonState(BUTTON_LIGHT))
+    if(((IButton *) tilda.buttons.getDevice(BUTTON_LIGHT))->isActive())
       tilda.glcd.drawStr(0, 40, "Light");
-    if(tilda.buttons.getButtonState(BUTTON_A))
+    if(((IButton *) tilda.buttons.getDevice(BUTTON_A))->isActive())
       tilda.glcd.drawStr(0, 40, "A");
-    if(tilda.buttons.getButtonState(BUTTON_B))
+    if(((IButton *) tilda.buttons.getDevice(BUTTON_B))->isActive())
       tilda.glcd.drawStr(0, 40, "B");
-    if(tilda.buttons.getButtonState(BUTTON_UP))
+    if(((IButton *) tilda.buttons.getDevice(BUTTON_UP))->isActive())
       tilda.glcd.drawStr(0, 40, "Up");
-    if(tilda.buttons.getButtonState(BUTTON_DOWN))
+    if(((IButton *) tilda.buttons.getDevice(BUTTON_DOWN))->isActive())
       tilda.glcd.drawStr(0, 40, "Down");
-    if(tilda.buttons.getButtonState(BUTTON_LEFT))
+    if(((IButton *) tilda.buttons.getDevice(BUTTON_LEFT))->isActive())
       tilda.glcd.drawStr(0, 40, "Left");
-    if(tilda.buttons.getButtonState(BUTTON_RIGHT))
+    if(((IButton *) tilda.buttons.getDevice(BUTTON_RIGHT))->isActive())
       tilda.glcd.drawStr(0, 40, "Right");
 
     // Show some battery info
@@ -69,15 +69,20 @@ void loop()
 /**
  * Basic handler for button state changes.
  */
-void button_handler(buttonid_t id, uint8_t state)
+void button_handler(inputtype_t type, IInputDevice * device)
 {
+  if(type != UIT_BUTTON)
+    return;
+
+  IButton * button = (IButton *) device;
+
   // Toggle backlight on pressing Light button
-  if(state && (id == BUTTON_LIGHT))
+  if(button->isActive() && (button->getID() == BUTTON_LIGHT))
     tilda.toggleBacklight();
 
   SerialUSB.print("Button ");
-  SerialUSB.print(id);
-  if(state)
+  SerialUSB.print(button->getID());
+  if(button->isActive())
     SerialUSB.println(" pressed.");
   else
     SerialUSB.println(" released.");

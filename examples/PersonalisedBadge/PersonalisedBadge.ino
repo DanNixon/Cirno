@@ -3,11 +3,11 @@
  * In case I ever want to use it as an overengineered badge again.
  */
 
-#include "U8glib.h"
-#include "UniversalInput.h"
-#include "UniversalButtons.h"
+#include <U8glib.h>
+#include <UniversalInputManager.h>
+#include <IButton.h>
 
-#include "TiLDA_MKe.h"
+#include <TiLDA_MKe.h>
 
 TiLDA_MKe tilda;
 bool torch = false;
@@ -17,7 +17,7 @@ void setup(void)
   tilda.setBacklight(LCD_BACKLIGHT_ON);
 
   // Set button callback
-  tilda.buttons.setStateCycleCallback(&button_handler);
+  tilda.buttons.setCallback(button_handler);
 }
 
 void loop()
@@ -58,9 +58,16 @@ void loop()
 /**
  * Basic handler for button state changes.
  */
-void button_handler(buttonid_t id, uint32_t time)
+void button_handler(inputtype_t type, IInputDevice * device)
 {
-  switch(id)
+  if(type != UIT_BUTTON)
+    return;
+
+  IButton * button = (IButton *) device;
+  if(button->isActive())
+    return;
+
+  switch(button->getID())
   {
     // Toggle backlight on Light
     case BUTTON_LIGHT:
@@ -70,7 +77,7 @@ void button_handler(buttonid_t id, uint32_t time)
     // Toggle LEDs on B
     case BUTTON_B:
       // Require a 1 second press to turn on, any length press to turn off
-      if(!torch && (time < 1000))
+      if(!torch && (button->lastActiveDuration() < 1000))
         break;
 
       torch = !torch;

@@ -1,16 +1,16 @@
 #ifndef _TILDA_MKE_H
 #define _TILDA_MKE_H
 
-#include "inttypes.h"
+#include <inttypes.h>
 
-#include "U8glib.h"
-#include "UniversalButtons.h"
+#include <U8glib.h>
+#include <UniversalInputManager.h>
 
-#define PMIC_BATTERY_FULL 652               // 100%
-#define PMIC_BATTERY_GOOD 512               // 25%
-#define PMIC_BATTERY_LOW 496                // 17%
-#define PMIC_BATTERY_VERYLOW 481            // 9%
-#define PMIC_BATTERY_FLAT 465               // 0%
+#define PMIC_BATTERY_FULL     652  // 100%
+#define PMIC_BATTERY_GOOD     512  // 25%
+#define PMIC_BATTERY_LOW      496  // 17%
+#define PMIC_BATTERY_VERYLOW  481  // 9%
+#define PMIC_BATTERY_FLAT     465  // 0%
 
 #define PMIC_BATTERY_PERCENT_RATIO 0.534
 
@@ -33,7 +33,7 @@ class TiLDA_MKe
     void drawWrappedStr(uint8_t x, uint8_t y, uint8_t w, uint8_t h,
         char *text, char delimiter=' ');
 
-    UniversalButtons buttons;
+    UniversalInputManager buttons;
     U8GLIB_NHD_C12864 glcd;
 
   private:
