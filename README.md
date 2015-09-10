@@ -7,8 +7,6 @@ Whilst FreeRTOS is a much better way to develop complex applications (such as th
 
 On the other hand there is a strong argument against use of FreeRTOS with Arduino libraries, since thread safety is pretty non existent.
 
-By default only the bare minimum hardware is supported, i.e. GLCD, RGB LEDs and buttons. This is partially to keep the binary size as low as possible and partially to keep the code down to the bare minimum.
-
 Libraries
 ---------
 
@@ -21,17 +19,7 @@ Getting Started
 ---------------
 
 1.  Install the [hardware files](https://github.com/DanNixon/ArduinoTiLDAHardware) and required libraries
-2.  Open the HelloWorld example and select the correct TiLDA MKe version number and ensure the Arduino core version is selected (the TiLDA I got from EMF Camp was a v0.333, so try this version first)
+2.  Open the `HelloWorld` example and select the correct TiLDA MKe version number (the TiLDA I got from EMF Camp was a v0.333, so try this first)
 3.  Upload
 4.  Modify
 5.  Repeat
-
-To Do
------
-
-Possibly add support for more hardware:
-
-- Radio
-- MPU
-- IR
-- Piezo speaker
