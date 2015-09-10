@@ -20,7 +20,7 @@ The following libraries are used:
 Getting Started
 ---------------
 
-1.  Ensure you have the TiLDA board definitions from the [Mk2-Firmware repo](https://github.com/emfcamp/Mk2-Firmware) added to your ```sketchbook/hardware``` folder (only the hardware folder is needed)
+1.  Install the [hardware files](https://github.com/DanNixon/ArduinoTiLDAHardware) and required libraries
 2.  Open the HelloWorld example and select the correct TiLDA MKe version number and ensure the Arduino core version is selected (the TiLDA I got from EMF Camp was a v0.333, so try this version first)
 3.  Upload
 4.  Modify
