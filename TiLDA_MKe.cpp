@@ -13,9 +13,7 @@ TiLDA_MKe::TiLDA_MKe() :
   /* but keeping it on digital makes it easier to toggle */
   pinMode(LCD_BACKLIGHT, OUTPUT);
 
-  /* For some reason the buttons seem to be happier left as they are, */
-  /* usually they would default to being pull ups. */
-  buttons.setButtonDefaults(false, false, 50);
+  buttons.setButtonDefaults(true, true, 50);
 
   // Configure buttons
   buttons.addNewButton(BUTTON_LIGHT);
