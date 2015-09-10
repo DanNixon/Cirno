@@ -1,0 +1,31 @@
+#######################################
+# Syntax Coloring Map For Cirno
+####################################### 
+# Class
+#######################################
+
+TiLDA_MKe	KEYWORD1
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+setLED	KEYWORD2
+setLEDs	KEYWORD2
+setBacklight	KEYWORD2
+backlight	KEYWORD2
+toggleBacklight	KEYWORD2
+getBatteryPercentage	KEYWORD2
+getBatteryVoltage	KEYWORD2
+isCharging	KEYWORD2
+drawWrappedStr	KEYWORD2
+
+#######################################
+# Constants
+#######################################
+ 
+PMIC_BATTERY_FULL	LITERAL1
+PMIC_BATTERY_GOOD	LITERAL1
+PMIC_BATTERY_LOW	LITERAL1
+PMIC_BATTERY_VERYLOW	LITERAL1
+PMIC_BATTERY_FLAT	LITERAL1
